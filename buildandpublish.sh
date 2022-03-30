@@ -2,4 +2,4 @@
 
 docker build . -t danielgran/debian-base:latest
 
-docker publish
+docker push danielgran/debian-base:latest
