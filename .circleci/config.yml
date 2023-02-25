@@ -8,7 +8,7 @@ jobs:
     resource_class: arm.medium
     steps:
       - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker build --platform linux/arm64/v8 -t danielgran/debian-base:latest ./debian-docker-base
+      - run: docker build --platform linux/arm64/v8 -t danielgran/debian-base:latest $CIRCLE_WORKING_DIRECTORY/docker-debian-base/Dockerfile
       - run: docker push danielgran/debian-base:latest
 
 
