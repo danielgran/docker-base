@@ -8,7 +8,7 @@ jobs:
     resource_class: arm.medium
     steps:
       - checkout
-      - run: apt get update && apt get upgrade -y
+      - run: apt update && apt upgrade -y
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker build -t danielgran/debian-base:latest .
       - run: docker push danielgran/debian-base:latest
