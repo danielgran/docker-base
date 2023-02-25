@@ -36,6 +36,4 @@ workflows:
       - build-and-push-amd64
         name: bapamd64
       - create-manifest
-        requires:
-          - baparm64v8
-          - bapamd64
+        requires: [baparm64v8, bapamd64]
