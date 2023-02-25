@@ -1,6 +1,6 @@
 FROM debian:bookworm
 
-RUN apt install gnupg
+RUN apt update
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 648ACFD622F3D138 0E98404D386FA1D9
 RUN  apt-get -y install gnupg2
 RUN  apt intall
