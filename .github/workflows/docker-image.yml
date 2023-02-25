@@ -10,7 +10,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-amd64:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -21,5 +21,19 @@ jobs:
         password: ${{ secrets.DOCKERHUBKEY }}
     - name: Build
       run: docker build . -t danielgran/debian-base:latest
+    - name: Push
+      run: docker push danielgran/debian-base:latest
+
+  build-arm64v8:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Docker Login
+      uses: docker/login-action@v1.14.1
+      with:
+        username: danielgran
+        password: ${{ secrets.DOCKERHUBKEY }}
+    - name: Build
+      run: docker build . --platform linux/arm64/v8 -t danielgran/debian-base:latest
     - name: Push
       run: docker push danielgran/debian-base:latest
