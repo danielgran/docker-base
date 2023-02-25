@@ -1,14 +1,14 @@
 FROM debian:bookworm-slim
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN sudo gpg --keyserver pgpkeys.mit.edu --recv-key 0E98404D386FA1D9
-RUN sudo gpg -a --export 0E98404D386FA1D9 | sudo apt-key add -
-RUN sudo apt-get update
+RUN  gpg --keyserver pgpkeys.mit.edu --recv-key 0E98404D386FA1D9
+RUN  gpg -a --export 0E98404D386FA1D9 |  apt-key add -
+RUN  apt-get update
 
 
-RUN sudo gpg --keyserver pgpkeys.mit.edu --recv-key  648ACFD622F3D138
-RUN sudo gpg -a --export 648ACFD622F3D138 | sudo apt-key add -
-RUN sudo apt-get update
+RUN  gpg --keyserver pgpkeys.mit.edu --recv-key  648ACFD622F3D138
+RUN  gpg -a --export 648ACFD622F3D138 |  apt-key add -
+RUN  apt-get update
 
 
 RUN apt-get update && apt-get upgrade -y && apt-get install --no-install-recommends -y
