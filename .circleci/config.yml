@@ -9,15 +9,24 @@ jobs:
     steps:
       - checkout
       - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker buildx build --push --platform linux/arm64/v8 --tag danielgran/debian-base .
+      - run: docker buildx build --push --platform linux/arm64/v8 --build-arg ARCH=arm64v8 --tag danielgran/debian-base:latest-arm64v8 .
   build-and-push-amd64:
-      machine:
-        image: ubuntu-2004:current
-      resource_class: medium
-      steps:
-        - checkout
-        - run: docker login -u danielgran -p $DOCKERHUBKEY
-        - run: docker buildx build --push --platform linux/amd64 --tag danielgran/debian-base .
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
+    steps:
+      - checkout
+      - run: docker login -u danielgran -p $DOCKERHUBKEY
+      - run: docker buildx build --push --platform linux/amd64 --build-arg ARCH=amd64 --tag danielgran/debian-base:latest-amd64 .
+
+  build-and-push-amd64:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
+    steps:
+      - run: docker manifest create danielgran/debian-base:latest --amend danielgran/debian-base:latest-arm64v8 --amend danielgran/debian-base:latest-amd64
+      - run: docker manifest push danielgran/debian-base:latest
+
 
 workflows:
   build-and-publish:
