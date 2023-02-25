@@ -2,7 +2,7 @@ version: 2.1
 
 
 jobs:
-  build-and-push:
+  build-and-push-arm64v8:
     machine:
       image: ubuntu-2004:202101-01
     resource_class: arm.medium
@@ -11,9 +11,18 @@ jobs:
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker buildx build --push --platform linux/arm64/v8 --tag danielgran/debian-base .
       - run: docker buildx build --push --platform linux/amd64 --tag danielgran/debian-base .
+  build-and-push-amd64:
+      machine:
+        image: ubuntu-2004:current
+      resource_class: medium
+      steps:
+        - checkout
+        - run: docker login -u danielgran -p $DOCKERHUBKEY
+        - run: docker buildx build --push --platform linux/amd64 --tag danielgran/debian-base .
 
 workflows:
   build-and-publish:
     jobs:
-      - build-and-push
+      - build-and-push-arm64v8
+      - build-and-push-amd64
 
