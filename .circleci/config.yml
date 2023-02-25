@@ -34,4 +34,4 @@ workflows:
       - build-and-push-arm64v8
       - build-and-push-amd64
       - create-manifest
-        requires: [build-and-push-arm64v8, build-and-push-amd64]
+        - requires: [build-and-push-arm64v8, build-and-push-amd64]
