@@ -32,9 +32,6 @@ jobs:
        --amend danielgran/debian-base:manifest-amd64
      - run: docker manifest push danielgran/debian-base:manifest-latest
        
-       
-
-
 workflows:
   build-and-publish:
     jobs:
