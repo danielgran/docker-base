@@ -23,6 +23,7 @@ jobs:
     macos:
       xcode: 14.2.0
     steps:
+      - run: brew install docker
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker buildx build --push --tag danielgran/debian-base:latest-macos126 .
 
