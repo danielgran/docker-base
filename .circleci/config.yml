@@ -19,7 +19,7 @@ jobs:
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker buildx build --push --platform linux/amd64 --build-arg ARCH=amd64 --tag danielgran/debian-base:latest-amd64 .
 
-  build-and-push-amd64:
+  create-manifest:
     machine:
       image: ubuntu-2004:current
     resource_class: medium
@@ -33,4 +33,4 @@ workflows:
     jobs:
       - build-and-push-arm64v8
       - build-and-push-amd64
-
+      - create-manifest
