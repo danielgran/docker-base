@@ -22,17 +22,18 @@ jobs:
       - run: sudo docker build . -t danielgran/debian-base:manifest-amd64 --build-arg ARCH=amd64
       - run: docker push danielgran/debian-base:manifest-amd64
 
-   manifest:
-     machine:
-       image: ubuntu-2004:current
-     resource_class: medium
-     steps:
-      - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker manifest create \
-        danielgran/debian-base:manifest-latest \
-        --amend danielgran/debian-base:manifest-arm64v8 \
-        --amend danielgran/debian-base:manifest-amd64
-      - run: docker manifest push danielgran/debian-base:manifest-latest
+   
+  manifest:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: medium
+    steps:
+     - run: docker login -u danielgran -p $DOCKERHUBKEY
+     - run: docker manifest create \
+       danielgran/debian-base:manifest-latest \
+       --amend danielgran/debian-base:manifest-arm64v8 \
+       --amend danielgran/debian-base:manifest-amd64
+     - run: docker manifest push danielgran/debian-base:manifest-latest
        
        
 
