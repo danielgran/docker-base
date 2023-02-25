@@ -7,7 +7,7 @@ jobs:
       image: ubuntu-2004:current
     environment:
       DOCKER_BUILDKIT: 1
-      BUILDX_PLATFORMS: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
+      BUILDX_PLATFORMS: linux/amd64,linux/arm64,linux/arm64/v8,linux/386,linux/arm/v7
     steps:
       - checkout
       - run:
@@ -15,31 +15,7 @@ jobs:
           command: |
             docker login -u danielgran -p $DOCKERHUBKEY
       - run:
-          name: Build from dockerfile
+          name: Build and push from dockerfile
           command: |
-            TAG=edge make build
-      - run:
-          name: Push to docker hub
-          command: |
-            TAG=edge make push
-      - run:
-          name: Install buildx
-          command: |
-            BUILDX_BINARY_URL="https://github.com/docker/buildx/releases/download/v0.4.2/buildx-v0.4.2.linux-amd64"
-
-            curl --output docker-buildx \
-              --silent --show-error --location --fail --retry 3 \
-              "$BUILDX_BINARY_URL"
-
-            mkdir -p ~/.docker/cli-plugins
-
-            mv docker-buildx ~/.docker/cli-plugins/
-            chmod a+x ~/.docker/cli-plugins/docker-buildx
-
-            docker buildx install
-            # Run binfmt
-            docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
-      - run:
-          name: Tag golden
-          command: |
-            BUILDX_PLATFORMS="$BUILDX_PLATFORMS" make cross-build
+            docker buildx create --use
+            docker buildx build --push --platform linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6 .
