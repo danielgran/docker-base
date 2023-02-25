@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: sudo docker build . -t danielgran/debian-base:latest
+      - run: sudo docker build . -t danielgran/debian-base:latest --build-arg ARCH=arm64v8
       - run: docker push danielgran/debian-base:latest
 
 
