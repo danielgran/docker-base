@@ -10,9 +10,9 @@ jobs:
       - checkout
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker buildx build \
-        --push \
-        --platform linux/arm64/v8,linux/amd64 \
-        --tag danielgran/debian-base .
+      --push \
+      --platform linux/arm64/v8,linux/amd64 \
+      --tag danielgran/debian-base .
 
 workflows:
   build-and-publish:
