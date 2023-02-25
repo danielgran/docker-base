@@ -9,7 +9,7 @@ jobs:
     steps:
       - checkout
       - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker build --platform linux/arm64/v8 -t danielgran/debian-base:latest $CIRCLE_WORKING_DIRECTORY/docker-debian-base/Dockerfile
+      - run: docker build --platform linux/arm64/v8 -t danielgran/debian-base:latest .
       - run: docker push danielgran/debian-base:latest
 
 
