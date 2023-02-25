@@ -10,7 +10,6 @@ jobs:
       - checkout
       - run: docker login -u danielgran -p $DOCKERHUBKEY
       - run: docker buildx build --push --platform linux/arm64/v8 --tag danielgran/debian-base .
-      - run: docker buildx build --push --platform linux/amd64 --tag danielgran/debian-base .
   build-and-push-amd64:
       machine:
         image: ubuntu-2004:current
