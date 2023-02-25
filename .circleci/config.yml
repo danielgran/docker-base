@@ -2,35 +2,44 @@ version: 2.1
 
 
 jobs:
-  build-and-push-arm64v8:
+  build:
     machine:
-      image: ubuntu-2004:current
-    resource_class: arm.medium
+      image: ubuntu-1604:202007-01
+    environment:
+      DOCKER_BUILDKIT: 1
+      BUILDX_PLATFORMS: linux/amd64,linux/arm64,linux/ppc64le,linux/s390x,linux/386,linux/arm/v7,linux/arm/v6
     steps:
       - checkout
-      - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker buildx build --push --platform linux/arm64/v8 --build-arg ARCH=arm64v8 --tag danielgran/debian-base:latest-arm64v8 .
-  build-and-push-amd64:
-    machine:
-      image: ubuntu-2004:current
-    resource_class: medium
-    steps:
-      - checkout
-      - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker buildx build --push --platform linux/amd64 --build-arg ARCH=amd64 --tag danielgran/debian-base:latest-amd64 .
+      - run:
+          name: Log in to docker hub
+          command: |
+            docker login -u danielgran -p $DOCKERHUBKEY
+      - run:
+          name: Build from dockerfile
+          command: |
+            TAG=edge make build
+      - run:
+          name: Push to docker hub
+          command: |
+            TAG=edge make push
+      - run:
+          name: Install buildx
+          command: |
+            BUILDX_BINARY_URL="https://github.com/docker/buildx/releases/download/v0.4.2/buildx-v0.4.2.linux-amd64"
 
-  build-and-push-macos126:
-    macos:
-      xcode: 14.2.0
-    steps:
-      - run: brew install docker
-      - run: docker login -u danielgran -p $DOCKERHUBKEY
-      - run: docker buildx build --push --tag danielgran/debian-base:latest-macos126 .
+            curl --output docker-buildx \
+              --silent --show-error --location --fail --retry 3 \
+              "$BUILDX_BINARY_URL"
 
+            mkdir -p ~/.docker/cli-plugins
 
-workflows:
-  build-and-publish:
-    jobs:
-      - build-and-push-arm64v8
-      - build-and-push-amd64
-      - build-and-push-macos126
+            mv docker-buildx ~/.docker/cli-plugins/
+            chmod a+x ~/.docker/cli-plugins/docker-buildx
+
+            docker buildx install
+            # Run binfmt
+            docker run --rm --privileged tonistiigi/binfmt:latest --install "$BUILDX_PLATFORMS"
+      - run:
+          name: Tag golden
+          command: |
+            BUILDX_PLATFORMS="$BUILDX_PLATFORMS" make cross-build
