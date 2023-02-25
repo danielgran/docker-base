@@ -8,6 +8,8 @@ jobs:
     resource_class: arm.medium
     steps:
       - run: docker login -u danielgran -p $DOCKERHUBKEY
+      - run: docker build . --platform linux/arm64/v8 -t danielgran/debian-base:latest
+      - run: docker push danielgran/debian-base:latest
 
 
 workflows:
