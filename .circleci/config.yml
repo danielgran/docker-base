@@ -18,4 +18,4 @@ jobs:
           name: Build and push from dockerfile
           command: |
             docker buildx create --use
-            docker buildx build --push --tag danielgran/debian-base:latest --platform BUILDX_PLATFORMS .
+            docker buildx build --push --tag danielgran/debian-base:latest --platform $BUILDX_PLATFORMS .
