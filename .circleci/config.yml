@@ -21,7 +21,7 @@ jobs:
 
   build-macos:
     macos:
-      xcode: "12.5.1"
+      xcode: 15.4.0
     environment:
       DOCKER_BUILDKIT: 1
       BUILDX_PLATFORMS: linux/amd64,linux/arm64/v8
@@ -45,7 +45,7 @@ jobs:
 
   build-windows:
     machine:
-      image: windows-server-2022-gui:2024.04.1
+      image: windows-server-2022-gui:current
     environment:
       DOCKER_BUILDKIT: 1
       BUILDX_PLATFORMS: linux/amd64,linux/arm64/v8
