@@ -44,8 +44,10 @@ jobs:
             docker buildx build --push --tag danielgran/debian-base:latest --platform $BUILDX_PLATFORMS .
 
   build-windows:
+    resource_class: 'windows.medium'
     machine:
-      image: windows-server-2022-gui:current
+      image: 'windows-server-2022-gui:current'
+      shell: 'powershell.exe -ExecutionPolicy Bypass'
     environment:
       DOCKER_BUILDKIT: 1
       BUILDX_PLATFORMS: linux/amd64,linux/arm64/v8
